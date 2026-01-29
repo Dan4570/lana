@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💖 Veux-tu être ma Valentine ? 💖</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Montserrat:wght@400;600&display=swap');
+
+body{
+    margin:0;
+    font-family:'Montserrat',sans-serif;
+    background:#0a0a0a;
+    color:white;
+    overflow:hidden;
+}
+
+/* 🔐 LOCK */
+#lockScreen{
+    position:fixed;
+    inset:0;
+    background:radial-gradient(circle,#ff2e63,#0a0a0a 70%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:99999;
+}
+
+.lock-box{
+    background:rgba(0,0,0,0.7);
+    padding:50px;
+    border-radius:30px;
+    text-align:center;
+    box-shadow:0 0 80px rgba(255,46,99,0.6);
+}
+
+.lock-box h1{
+    font-family:'Cormorant Garamond',serif;
+    font-size:3rem;
+}
+
+.lock-box input{
+    padding:15px;
+    border-radius:30px;
+    border:none;
+    width:220px;
+    text-align:center;
+    font-size:1.1rem;
+    margin-top:20px;
+}
+
+.lock-box button{
+    margin-top:20px;
+    padding:15px 40px;
+    border-radius:30px;
+    border:none;
+    background:linear-gradient(135deg,#ff2e63,#fe5f5f);
+    color:white;
+    font-size:1.1rem;
+    cursor:pointer;
+}
+
+.hint{
+    margin-top:15px;
+    font-style:italic;
+    opacity:0.8;
+}
+
+/* 💖 PAGE */
+.container{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+}
+
+.hero{
+    max-width:900px;
+}
+
+.title{
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(3rem,8vw,6rem);
+    background:linear-gradient(45deg,#ff2e63,#ffaa5a);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.message{
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.6rem;
+    margin:30px 0;
+}
+
+.buttons{
+    display:flex;
+    gap:30px;
+    justify-content:center;
+    margin-top:40px;
+}
+
+button{
+    padding:20px 50px;
+    border-radius:50px;
+    border:none;
+    font-size:1.1rem;
+    cursor:pointer;
+}
+
+.yes{
+    background:linear-gradient(135deg,#ff2e63,#fe5f5f);
+    color:white;
+}
+
+.no{
+    background:rgba(255,255,255,0.2);
+    color:white;
+}
+
+/* 💌 LETTRE D’AMOUR */
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.95);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    opacity:0;
+    pointer-events:none;
+    transition:0.6s;
+}
+
+.modal.active{
+    opacity:1;
+    pointer-events:all;
+}
+
+.modal-content{
+    background:rgba(255,255,255,0.1);
+    backdrop-filter:blur(25px);
+    padding:60px;
+    border-radius:40px;
+    max-width:800px;
+    box-shadow:0 0 80px rgba(255,46,99,0.6);
+}
+
+.modal-content h2{
+    font-family:'Cormorant Garamond',serif;
+    font-size:3rem;
+    margin-bottom:30px;
+    color:#ff9ab5;
+}
+
+#letter{
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.6rem;
+    line-height:1.8;
+    color:#ffdbe5;
+    text-shadow:0 0 15px rgba(255,46,99,0.6);
+    min-height:260px;
+}
+
+.heart{
+    position:fixed;
+    bottom:-20px;
+    font-size:1.5rem;
+    animation:float 6s linear infinite;
+    pointer-events:none;
+}
+
+@keyframes float{
+    from{transform:translateY(0);opacity:1}
+    to{transform:translateY(-110vh);opacity:0}
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🔐 LOCK SCREEN -->
+<div id="lockScreen">
+    <div class="lock-box">
+        <h1>🔐 Accès secret</h1>
+        <p>Entre le code pour continuer</p>
+        <input type="password" id="codeInput" placeholder="Code secret">
+        <br>
+        <button onclick="checkCode()">Entrer</button>
+        <div class="hint">Indice : 🐶 ouaf ouaf</div>
+    </div>
+</div>
+
+<!-- 💖 PAGE -->
+<div class="container">
+    <div class="hero">
+        <h1 class="title">Mon Amour 💖</h1>
+        <p class="message">
+            Depuis que tu es entrée dans ma vie,<br>
+            chaque jour est devenu plus beau.<br><br>
+            <strong>Veux-tu être ma Valentine ?</strong>
+        </p>
+
+        <div class="buttons">
+            <button class="yes" onclick="celebrate()">Oui ❤️</button>
+            <button class="no" onmouseover="runAway(this)">Non 💔</button>
+        </div>
+    </div>
+</div>
+
+<!-- 💌 LETTRE -->
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <h2>💌 Ma lettre pour toi 💌</h2>
+        <div id="letter"></div>
+    </div>
+</div>
+    </div>
+</div>
+
+<script>
+function checkCode(){
+    const code = document.getElementById("codeInput").value;
+    if(code === "azur"){
+        document.getElementById("lockScreen").style.display="none";
+    }else{
+        alert("❌ Mauvais code");
+    }
+}
+
+function celebrate(){
+    document.getElementById("modal").classList.add("active");
+    startLetter();
+    setInterval(createHeart,400);
+}
+
+function startLetter(){
+    const text = `Mon amour,\n\nDepuis le premier jour, tu fais battre mon cœur plus fort.\nChaque sourire, chaque regard, chaque instant avec toi\nrend ma vie plus belle.\nChaque moment passé avec toi est un trésor,\net je veux continuer à partager des milliers de souvenirs\n❤️`;
+
+    const el = document.getElementById("letter");
+    el.innerHTML = "";
+    let i = 0;
+    const timer = setInterval(()=>{
+        el.innerHTML += text[i] === "\n" ? "<br>" : text[i];
+        i++;
+        if(i >= text.length) clearInterval(timer);
+    }, 45);
+}
+
+function createHeart(){
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.innerHTML = "❤️";
+    h.style.left = Math.random()*100 + "vw";
+    h.style.fontSize = (Math.random()*1.5+1)+"rem";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),6000);
+}
+
+function runAway(btn){
+    btn.style.position="absolute";
+    btn.style.left=Math.random()*80+"vw";
+    btn.style.top=Math.random()*80+"vh";
+}
+</script>
+
+</body>
+</html>
